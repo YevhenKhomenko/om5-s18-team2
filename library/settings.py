@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
