@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/book/detail/" method="get">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Search">
+</form>
+
+<h1>Here we can see the detail info about book with id {{ book.id }}</h1>
+
+<div class="container">
+        <table class="table table-dark table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ book.name }}</td>
+                </tr>
+                <tr>
+                    <th>Short description</th>
+                    <td>{{ book.description }}</td>
+                </tr>
+                <tr>
+                    <th>Authors</th>
+                    {% for author in book.authors.all %}
+                    <td>{{ author.name }} {{ author.patronymic }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <th>Count</th>
+                    <td>{{ book.count }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+<h4>Edit book info</h4>
+<form action="/book/detail/{{book.id}}" method="post">
+    Title
+    <input type="text" placeholder="Title" name="name" class="form-control" value="{{book.name}}"><br>
+    Description
+    <input type="text" placeholder="Description" name="description" class="form-control" value="{{book.description}}"><br>
+    Count
+    <input type="text" placeholder="Count" name="count" class="form-control" value="{{book.count}}"><br>
+    <button class="btn btn-success" type="submit">Update</button>
+{% csrf_token %}
+</form>
+
+<form action="/book/delete_book/{{book.id}}">
+    <button class="btn btn-success" type="submit">Delete book</button>
+</form>
+
+{% endblock %}

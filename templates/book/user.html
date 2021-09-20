@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/book/user/" method="get">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Search">
+</form>
+<h1>Here we can see the list of all books given to user {{ user.first_name }} {{ user.last_name }}</h1>
+
+{% for book in page_obj %}
+	<li>
+	<a href="/book/detail/{{ book.id }}">{{ book.name }}</a>
+	{{ book.description }} Count = {{ book.count }}</li>
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
+

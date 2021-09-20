@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Here we can see the detail info about order with id {{ order.id }}</h1>
+
+<div class="container">
+        <table class="table table-dark table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th>user</th>
+                    <td>user id: {{ order.user.id }} user surname: {{ order.user.surname }}</td>
+                </tr>
+                <tr>
+                    <th>book</th>
+                    <td>book id: {{ order.book.id }} book name: {{ order.book.name }}</td>
+                </tr>
+                <tr>
+                    <th>created at</th>
+                    <td>{{ order.created_at }} </td>
+                </tr>
+                <tr>
+                    <th>end at</th>
+                    <td>{{ order.end_at }}</td>
+                </tr>
+                <tr>
+                    <th>plated end at</th>
+                    <td>{{ order.plated_end_at }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+<H1>Update order</H1>
+<form method="get">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-success" type="submit">Update order</button>
+</form>
+
+<form action="/order/delete_order/{{order.id}}">
+    <button class="btn btn-success" type="submit">Delete order</button>
+</form>
+
+{% endblock %}
