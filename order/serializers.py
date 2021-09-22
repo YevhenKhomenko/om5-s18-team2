@@ -52,7 +52,7 @@ class OrderDetailsSerializer(serializers.ModelSerializer):
     book = BookNestedSerializer(required=False)
     user_id = serializers.IntegerField(required=False)
     book_id = serializers.IntegerField(required=False)
-    end_at = serializers.DateTimeField(required=False)
+    end_at = serializers.DateTimeField(required=False, allow_null=True)
     plated_end_at = serializers.DateTimeField(required=False)
 
     class Meta:
