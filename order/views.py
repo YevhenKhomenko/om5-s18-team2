@@ -5,6 +5,10 @@ from authentication.models import CustomUser
 from django.core.paginator import Paginator
 from django.utils import timezone
 
+from rest_framework import generics
+
+from .serializers import OrderListSerializer, OrderDetailsSerializer
+
 
 def first_view(request):
     orders = sorted(
@@ -64,3 +68,22 @@ def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.delete()
     return redirect('orders')
+
+
+class OrderListView(generics.ListAPIView):
+
+    queryset = Order.objects.all()
+    serializer_class = OrderListSerializer
+
+
+class OrderDetailsView(generics.RetrieveUpdateDestroyAPIView):
+
+    serializer_class = OrderDetailsSerializer
+
+    def get_object(self):
+        return get_object_or_404(Order, pk=self.kwargs.get('order_id'))
+
+
+class CreateOrderView(generics.CreateAPIView):
+
+    serializer_class = OrderDetailsSerializer
