@@ -3,7 +3,6 @@ from django.db import models, IntegrityError, DataError
 from author.models import Author
 
 
-
 class Book(models.Model):
     """
         This class represents an Author. \n

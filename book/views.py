@@ -8,6 +8,11 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 
 
+from rest_framework import generics
+
+from .serializers import BookListSerializer, BookDetailsSerializer
+
+
 def first_view(request):
     form = SortFilterForm(request.GET)
     books = Book.objects.all()
@@ -179,6 +184,25 @@ def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     book.delete()
     return redirect('books')
+
+
+class BookListView(generics.ListAPIView):
+
+    queryset = Book.objects.all()
+    serializer_class = BookListSerializer
+
+
+class BookDetailsView(generics.RetrieveUpdateDestroyAPIView):
+
+    serializer_class = BookDetailsSerializer
+
+    def get_object(self):
+        return get_object_or_404(Book, pk=self.kwargs.get('book_id'))
+
+
+class AddBookView(generics.CreateAPIView):
+
+    serializer_class = BookDetailsSerializer
 
 
 
