@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import *
 from .forms import CustomUserForm
 from django.views.generic import DeleteView
+
+from rest_framework import generics
+from .serializers import UserListSerializer, UserDetailSerializer
 
 
 def index(request):
@@ -38,11 +41,10 @@ def create(request):
         else:
             error = "неверная форма"
 
-
     data = {
         'form': CustomUserForm(),
         'error': error
-            }
+    }
     return render(request, 'authentication/create.html', data)
 
 
@@ -63,12 +65,27 @@ def edit(request, user_id):
     data = {
         'form': CustomUserForm(instance=user),
         'error': error
-            }
+    }
     return render(request, 'authentication/edit.html', data)
 
 
 def delete_user(request, user_id=0):
-
     if request.method == "POST" and user_id != 0:
         CustomUser.delete_by_id(user_id)
         return redirect("/")
+
+
+class UserListAPIView(generics.ListAPIView):
+    serializer_class = UserListSerializer
+    queryset = CustomUser.get_all()
+
+
+class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserDetailSerializer
+
+    def get_object(self):
+        return get_object_or_404(CustomUser, pk=self.kwargs.get('user_id'))
+
+
+class UserCreateAPIView(generics.CreateAPIView):
+    serializer_class = UserDetailSerializer
