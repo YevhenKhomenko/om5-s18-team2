@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,3 +131,8 @@ try:
     from . local_settings import *
 except ImportError:
     pass
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
